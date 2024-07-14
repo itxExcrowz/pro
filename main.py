@@ -5,10 +5,10 @@ import datetime
 import os
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('7109032816:AAGZWoie2tiWtxlleebKqfdK7yGHve4uW_s')
+bot = telebot.TeleBot('7443640307:AAFvBmKzSVUBQbx5rR6aryz1i8E5Uhf6viA')
 
 # Admin user IDs
-admin_id = ["6824982812"]
+admin_id = ["1069319252"]
 
 # File to store allowed user IDs
 USER_FILE = "users.txt"
@@ -232,7 +232,7 @@ def handle_bgmi(message):
             response = "✅ Usage :- /bgmi <target> <port> <time>"  # Updated command syntax
     else:
         response = """❌ You Are Not Authorized To Use This Command ❌.
-                      🛒 Please Buy From @KINGxVIPER"""
+                      🛒 Please Buy From @MickeyUnb"""
 
     bot.reply_to(message, response)
 
@@ -270,8 +270,8 @@ def show_help(message):
 🤖 To See Admin Commands:
 💥 /admincmd : Shows All Admin Commands.
 
-🚀 Buy From :- @KINGxVIPER
-🚀 Official Channel :- @KINGxVIPER
+🚀 Buy From :- @MickeyUnb
+🚀 Official Channel :- @UnbeatableServerFreeze
 '''
     for handler in bot.message_handlers:
         if hasattr(handler, 'commands'):
@@ -286,9 +286,9 @@ def show_help(message):
 @bot.message_handler(commands=['start'])
 def welcome_start(message):
     user_name = message.from_user.first_name
-    response = f'''👋🏻Welcome to The Bot, KING x VIPER VIP DDOS 💖
+    response = f'''👋🏻Welcome to The Bot, Unbeatable DDOS 💖
                     🤖Feel Free to Explore. 
-                    ✅Join :- @KINGxVIPER'''
+                    ✅Join :- @MickeyUnb'''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['rules'])
