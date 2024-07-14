@@ -254,9 +254,7 @@ COOLDOWN_TIME = 0  # 0 minute cooldown
 def handle_bgmi(message):
     user_id = str(message.chat.id)
 
-    if user_id in allowed_user_ids:
-        # Check if the user is in admin_id (admins have no cooldown)
-        if user_id not in admin_id:
+
     # Check if user is allowed to run the command and has access
     if user_id in allowed_user_ids and check_access(user_id):
         # Check if the user is not on cooldown
